@@ -1,21 +1,10 @@
 """Wraps the C library that executes a Lua script."""
 
-import cffi
 import msgpack
+from .lib import load_lib
 
 
-_C_HEADER = 'scriptrunner.h'
-_C_LIBRARY = 'scriptrunner.so'
-
-
-# Load library:
-
-_ffi = cffi.FFI()
-
-with open(_C_HEADER) as header:
-    _ffi.cdef(header.read())
-
-_lib = _ffi.dlopen(_C_LIBRARY)
+_ffi, _lib = load_lib()
 
 
 def run_script(script, table_name='tbl', table=None, instruction_quota=1000):
